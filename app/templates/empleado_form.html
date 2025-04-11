@@ -1,36 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Nuevo Empleado</h2>
-<form method="POST">
-  <div class="mb-3">
-    <label class="form-label">Código</label>
-    <input type="text" name="codigo_empleado" class="form-control" required>
+<h2>{% if empleado %}Editar Empleado{% else %}Nuevo Empleado{% endif %}</h2>
+
+<form method="POST" class="mt-4">
+  <div class="form-group">
+    <label for="codigo_empleado">Código de Empleado</label>
+    <input type="text" class="form-control" id="codigo_empleado" name="codigo_empleado" value="{{ empleado.codigo_empleado if empleado else '' }}" required>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Nombre</label>
-    <input type="text" name="nombre" class="form-control" required>
+
+  <div class="form-group">
+    <label for="nombre">Nombre</label>
+    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ empleado.nombre if empleado else '' }}" required>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Extensión</label>
-    <input type="text" name="extension" class="form-control">
+
+  <div class="form-group">
+    <label for="extension">Extensión</label>
+    <input type="text" class="form-control" id="extension" name="extension" value="{{ empleado.extension if empleado else '' }}" required>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Ubicación</label>
-    <select name="ubicacion_id" class="form-select">
-      {% for u in ubicaciones %}
-      <option value="{{ u.id }}">{{ u.nombre }}</option>
+
+  <div class="form-group">
+    <label for="ubicacion">Ubicación</label>
+    <select class="form-control" id="ubicacion" name="ubicacion_id" required>
+      {% for ubicacion in ubicaciones %}
+      <option value="{{ ubicacion.id }}" {% if empleado and empleado.ubicacion_id == ubicacion.id %}selected{% endif %}>
+        {{ ubicacion.nombre }}
+      </option>
       {% endfor %}
     </select>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Puesto</label>
-    <select name="puesto_id" class="form-select">
-      {% for p in puestos %}
-      <option value="{{ p.id }}">{{ p.nombre }}</option>
+
+  <div class="form-group">
+    <label for="puesto">Puesto</label>
+    <select class="form-control" id="puesto" name="puesto_id" required>
+      {% for puesto in puestos %}
+      <option value="{{ puesto.id }}" {% if empleado and empleado.puesto_id == puesto.id %}selected{% endif %}>
+        {{ puesto.nombre }}
+      </option>
       {% endfor %}
     </select>
   </div>
-  <button type="submit" class="btn btn-success">Guardar</button>
+
+  <!-- Contenedor con los botones a la par -->
+  <div class="form-group d-flex mt-3">
+    <!-- Botón Regresar -->
+    <a href="{{ url_for('main.index') }}" class="btn btn-secondary me-2">
+      <i class="bi bi-arrow-left"></i> Regresar
+    </a>
+    <!-- Botón Guardar con ícono de disquete -->
+    <button type="submit" class="btn btn-primary">
+      <i class="bi bi-save"></i> Guardar
+    </button>
+  </div>
 </form>
 {% endblock %}

@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<a href="{{ url_for('main.nuevo_empleado') }}" class="btn btn-primary mb-3">Nuevo Empleado</a>
+{% block head %}
+  <!-- Incluir Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}
 
-<table class="table table-striped">
+{% block content %}
+<a href="{{ url_for('main.nuevo_empleado') }}" class="btn btn-primary mb-3">
+  <i class="bi bi-person-plus"></i> Nuevo Empleado
+</a>
+
+<!-- Campo de búsqueda -->
+<div class="mb-3">
+  <input type="text" id="buscador" class="form-control" placeholder="Buscar empleado...">
+</div>
+
+<table class="table table-striped" id="tabla-empleados">
   <thead>
     <tr>
       <th>Código</th>
@@ -11,6 +23,7 @@
       <th>Extensión</th>
       <th>Ubicación</th>
       <th>Puesto</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -21,8 +34,31 @@
       <td>{{ e.extension }}</td>
       <td>{{ e.ubicacion.nombre }}</td>
       <td>{{ e.puesto.nombre }}</td>
+      <td>
+        <a href="{{ url_for('main.editar_empleado', empleado_id=e.id) }}" class="btn btn-warning btn-sm">
+          <i class="bi bi-pencil-square"></i> Actualizar
+        </a>
+        <form action="{{ url_for('main.eliminar_empleado', empleado_id=e.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este empleado?');">
+          <button type="submit" class="btn btn-danger btn-sm">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </form>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+
+<!-- Script para filtrar la tabla -->
+<script>
+  document.getElementById('buscador').addEventListener('keyup', function () {
+    const filtro = this.value.toLowerCase();
+    const filas = document.querySelectorAll('#tabla-empleados tbody tr');
+
+    filas.forEach(fila => {
+      const textoFila = fila.textContent.toLowerCase();
+      fila.style.display = textoFila.includes(filtro) ? '' : 'none';
+    });
+  });
+</script>
 {% endblock %}
