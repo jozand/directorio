@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{{ url_for('main.nuevo_empleado') }}" class="btn btn-primary mb-3">Nuevo Empleado</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Extensión</th>
+      <th>Ubicación</th>
+      <th>Puesto</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in empleados %}
+    <tr>
+      <td>{{ e.codigo_empleado }}</td>
+      <td>{{ e.nombre }}</td>
+      <td>{{ e.extension }}</td>
+      <td>{{ e.ubicacion.nombre }}</td>
+      <td>{{ e.puesto.nombre }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

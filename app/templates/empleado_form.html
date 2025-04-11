@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Nuevo Empleado</h2>
+<form method="POST">
+  <div class="mb-3">
+    <label class="form-label">Código</label>
+    <input type="text" name="codigo_empleado" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Nombre</label>
+    <input type="text" name="nombre" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Extensión</label>
+    <input type="text" name="extension" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Ubicación</label>
+    <select name="ubicacion_id" class="form-select">
+      {% for u in ubicaciones %}
+      <option value="{{ u.id }}">{{ u.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Puesto</label>
+    <select name="puesto_id" class="form-select">
+      {% for p in puestos %}
+      <option value="{{ p.id }}">{{ p.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+{% endblock %}
